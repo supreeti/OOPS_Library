@@ -1,0 +1,32 @@
+name: RuboCop
+
+on:
+  push:
+    branches:
+      - main # Adjust the branch name as needed
+
+jobs:
+  rubocop:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.x # Specify the Ruby version you're using
+
+      - name: Install Bundler
+        run: gem install bundler
+        env:
+          GEM_HOME: ${{github.workspace}}/.gem
+
+      - name: Install Dependencies
+        run: bundle install
+        env:
+          GEM_HOME: ${{github.workspace}}/.gem
+
+      - name: Run RuboCop
+        run: bundle exec rubocop
